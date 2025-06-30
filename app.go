@@ -2,6 +2,7 @@ package btk
 
 import (
 	"io"
+	"time"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -63,7 +64,7 @@ func Init(title string, width, height int) (*App, error) {
 
 	renderer.Present()
 
-	quit := make(chan struct{})
+	quit := make(chan struct{}, 1)
 	app := &App{renderer, window, quit}
 
 	go app.pollEvents()
@@ -94,6 +95,8 @@ func (a *App) pollEvents() {
 			a.quit <- struct{}{}
 			return
 		}
+
+		time.Sleep(16 * time.Millisecond)
 	}
 }
 
